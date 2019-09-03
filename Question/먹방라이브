@@ -1,0 +1,85 @@
+2018 KAKAO BLIND
+문제
+
+```
+import java.util.*;
+
+class Solution {
+    public int solution(int[] food_times, long k) {
+        int answer = 0;
+        
+        answer = Cal(food_times, food_times.length, k);
+        if(answer != -1)
+            ++answer;
+        
+        return answer;
+    }
+    
+    public static int Cal(int[] food_times, int size, long k){
+        long nowTime = 0;
+        int index = 0;
+        int endCount = 0;
+        int min = 0;
+        long passTime = 0;
+
+        do{
+            min = GetMinValue(food_times, size);
+            passTime = 0;
+            if(min != 100000001){
+                if(nowTime + (long)(min * (size-endCount) ) < k){
+                    for(int i = 0; i < size; i++){
+                        if(food_times[i] != 100000001) {
+                            food_times[i] -= min;
+                            passTime += min;
+                            if (food_times[i] == 0) {
+                                food_times[i] = 100000001;
+                                ++endCount;
+                            }
+                        }
+                    }
+                }
+            }
+            else {
+                return -1;
+            }
+            nowTime += passTime;
+        }while(passTime != 0);
+
+        while(food_times[index] == 100000001) {
+            ++index;
+            index = index % size;
+        }
+
+        while(nowTime < k){
+            --food_times[index];
+            if(food_times[index] == 0) {
+                food_times[index] = 100000001;
+                ++endCount;
+            }
+            ++index;
+            index = index % size;
+
+            if(endCount >= size)
+                return -1;
+
+            while(food_times[index] == 100000001) {
+                ++index;
+                index = index % size;
+            }
+            ++nowTime;
+        }
+
+        return index;
+    }
+
+    public static int GetMinValue(int[] food_times, int size){
+        int min = food_times[0];
+
+        for(int i = 1; i < size; i++) {
+            if (food_times[i] < min)
+                min = food_times[i];
+        }
+        return min;
+    }
+}
+```
