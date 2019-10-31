@@ -1,4 +1,4 @@
-### 1번
+## 1번
 ```c++
 #include <stdio.h>
 #include <string>
@@ -86,7 +86,7 @@ int main() {
 }
 ```
 
-### 2번
+## 2번
 ```java
 import java.util.*;
 import java.io.*;
@@ -181,5 +181,115 @@ class Vertex{
         this.y = y;
         this.dist = dist;
     }
+}
+```
+
+## 3번
+
+오직 C언어로만 푸는 문제
+
+### 입력값
+```
+3
+3
+255-128-3
+254-128-3
+254-128-19
+1
+0
+0
+1
+3
+254-255-255
+255-254-255
+255-255-254
+```
+
+```c
+#include<stdio.h>
+#include <stdlib.h>
+
+int subStringNum(char* input, int size, int* startIndex) {
+	char temp[4];
+	int i;
+	int index = 0;
+	for (i = *startIndex; i < size; i++) {
+		if (input[i] == '-')
+			break;
+		temp[index++] = input[i];
+	}
+	if (i < size)
+		*startIndex = (i + 1);
+
+	return atoi(temp);
+}
+
+int countOneBit(int value) {
+	int result = 0;
+
+	for (; value != 0; ++result) {
+		value &= (value - 1);
+	}
+
+	return result;
+}
+
+int main() {
+	int T = 0;
+	int chipCount = 0;
+	int chipCharLength;
+	int i, j, k;
+	int answer = 0;
+	char** input = NULL;
+
+	input = (char**)malloc(sizeof(char*) * 3);
+
+	for (i = 0; i < 3; i++) {
+		input[i] = (char*)malloc(sizeof(char*) * 2000000);
+	}
+
+	scanf_s("%d", &T);
+
+	for (k = 0; k < T; k++) {
+		int tempIndex = 0;
+		int compareNum1 = 0;
+		int compareNum2 = 0;
+		int indexs[] = { 0, 0, 0 };
+		int values[] = { 0, 0, 0 };
+		
+		answer = 0;
+		scanf_s("%d", &chipCount);
+		printf("T:%d , chipCount: %d\n", T, chipCount);
+
+		chipCharLength = sizeof(char) * chipCount * 4;
+
+		for (i = 0; i < 3; i++) {
+			scanf_s("%s", input[i], chipCharLength);
+		}
+
+		for (i = 0; i < 3; i++) {
+			printf("input%d: %s\n", i, input[i]);
+		}
+
+		for (i = 0; i < chipCount; i++) {
+			for (j = 0; j < 3; j++) {
+				values[j] = subStringNum(input[j], chipCharLength, &indexs[j]);
+				printf("value: %d\n", values[j]);
+			}
+
+			compareNum1 = values[0] ^ values[1];
+			compareNum2 = values[2] ^ values[1];
+			answer += countOneBit(compareNum1 | compareNum2);
+		}
+
+		printf("answer: %d\n", answer);
+	}
+
+	for (i = 0; i < 3; i++) {
+		free(input[i]);
+	}
+	free(input);
+
+	return 0;
 }
 ```
