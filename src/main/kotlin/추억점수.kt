@@ -15,17 +15,3 @@ class 추억점수 {
         return answer.toIntArray()
     }
 }
-
-fun main(args: Array<String>) {
-    val solution = 추억점수()
-
-    val res = solution.solution(
-        name = arrayOf("may", "kein", "kain", "radi"), yearning = intArrayOf(5, 10, 1, 3),
-        photo = arrayOf(
-            arrayOf("may", "kein", "kain", "radi"),
-            arrayOf("may", "kein", "brin", "deny"),
-            arrayOf("kon", "kain", "may", "coni")
-        )
-    )
-    println(res)
-}
